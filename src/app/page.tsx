@@ -50,6 +50,15 @@ export default function Home() {
           </a>
         </div>
       )}
+
+      <div className="flex gap-4 pt-2">
+        <a className="underline" href="/dashboard">
+          Dashboard
+        </a>
+        <a className="underline" href="/config">
+          Config
+        </a>
+      </div>
     </main>
   );
 }

@@ -48,6 +48,7 @@ DEMO_ADMIN_TOKEN="change-me-super-secret"
 4. Initialize the database:
 
 ```bash
+pnpm db:generate  # generates db schema
 pnpm db:migrate   # creates FTS + config tables
 pnpm db:seed      # seeds JD, candidate CV, and question bank
 ```

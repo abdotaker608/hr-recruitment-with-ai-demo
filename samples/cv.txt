@@ -1,0 +1,52 @@
+Name: Sarah Ahmed
+Email: sarah.ahmed@example.com
+
+Location: Cairo, Egypt
+
+Summary
+Backend engineer with 6 years of experience building distributed, high-performance systems. Strong background in Node.js, TypeScript, and cloud-native deployments. Experienced in DevOps practices, CI/CD, and scaling production services.
+
+Experience
+
+Senior Backend Engineer – FinTechX (2021–present)
+
+Designed and scaled payment APIs handling 20k+ transactions/minute.
+
+Migrated legacy services to Node.js/TypeScript microservices on Kubernetes (GCP).
+
+Built CI/CD pipelines with GitHub Actions and Helm charts, reducing deployment time by 60%.
+
+Led a small team of 3 engineers; mentored peers in code quality and observability.
+
+Implemented Redis caching layer → reduced p95 latency from 800ms to 200ms.
+
+Backend Engineer – ShopEase (2018–2021)
+
+Developed backend services in Node.js/Express serving millions of daily users.
+
+Worked on PostgreSQL optimization and introduced read replicas for scaling.
+
+Automated infrastructure provisioning with Terraform.
+
+Integrated monitoring dashboards (Grafana, Prometheus) → improved MTTR by 40%.
+
+Education
+B.Sc. Computer Science, Cairo University
+
+Skills
+
+Languages: Node.js, TypeScript, Go (beginner)
+
+Databases: PostgreSQL, Redis
+
+Cloud/DevOps: Kubernetes, Docker, Terraform, GitHub Actions, Helm
+
+Monitoring: Prometheus, Grafana, ELK stack
+
+Soft skills: Team leadership, mentoring, cross-functional collaboration
+
+Notable Projects
+
+Built real-time fraud detection pipeline using Kafka and Node.js.
+
+Co-led migration from monolith to microservices (ShopEase).

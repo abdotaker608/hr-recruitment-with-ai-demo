@@ -1,0 +1,44 @@
+Role: Senior Backend Engineer (with DevOps expertise)
+Location: Hybrid / Remote
+Department: Engineering
+
+About the role
+We are seeking a Senior Backend Engineer to design, build, and scale high-availability services powering our core platform. You will be a key driver in improving backend performance and ensuring reliable deployments in cloud-native environments.
+
+Responsibilities
+
+Architect and implement backend services in Node.js/TypeScript and Go.
+
+Own service lifecycle from design → deployment → monitoring.
+
+Collaborate with frontend, product, and data teams to deliver high-impact features.
+
+Implement CI/CD pipelines, automate testing, and ensure deployment reliability.
+
+Manage containerized services with Docker and Kubernetes.
+
+Design scalable data models and optimize queries (PostgreSQL, Redis).
+
+Monitor performance (Prometheus, Grafana, ELK) and resolve production incidents.
+
+Qualifications
+
+5+ years backend engineering experience (Node.js, Go, or similar).
+
+Strong knowledge of distributed systems and scalable architectures.
+
+Solid DevOps background: CI/CD, container orchestration, IaC (Terraform, Helm).
+
+Experience in cloud platforms (AWS/GCP).
+
+Proven track record of mentoring junior engineers.
+
+Excellent communication and cross-team collaboration skills.
+
+Nice to have
+
+Event-driven architectures (Kafka, RabbitMQ).
+
+Experience with security best practices in distributed systems.
+
+Prior leadership in scaling teams or projects.

@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS app_config (
+  id TEXT PRIMARY KEY,
+  w_backend REAL NOT NULL DEFAULT 0.4,
+  w_leadership REAL NOT NULL DEFAULT 0.3,
+  w_scaling REAL NOT NULL DEFAULT 0.3,
+  th_advance INTEGER NOT NULL DEFAULT 75,
+  th_hold_min INTEGER NOT NULL DEFAULT 60
+);
+
+INSERT OR IGNORE INTO app_config (id) VALUES ('default');

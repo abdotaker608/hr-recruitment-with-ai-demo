@@ -40,10 +40,12 @@ export default async function ReportPage({
 
   const riskFlags: string[] = s.riskFlags ? JSON.parse(s.riskFlags) : [];
 
-  async function copySummary() {
-    "use server";
-    // no-op on server; we handle copy on client via a small component below
-  }
+  const aiSuspected = riskFlags.some(
+    (r) =>
+      /AI-assisted/i.test(r) ||
+      /AI assisted/i.test(r) ||
+      /Possible AI-assisted responses/i.test(r)
+  );
 
   return (
     <main className="p-6 space-y-6">
@@ -68,13 +70,17 @@ export default async function ReportPage({
         <div className="p-4 rounded border">
           <div className="font-semibold">Decision</div>
           <div className="mt-1">{badge(s.fitScore ?? null)}</div>
+          {aiSuspected && (
+            <div className="mt-2 inline-flex items-center gap-2 text-xs px-2 py-1 rounded bg-orange-100 text-orange-800">
+              ⚠︎ Possible AI-assisted responses
+            </div>
+          )}
         </div>
       </section>
 
       <section className="p-4 rounded border space-y-2">
         <div className="flex items-center justify-between">
           <h2 className="font-semibold">Summary</h2>
-          <CopyButton text={s.summary ?? "No summary yet."} />
         </div>
         <p className="whitespace-pre-wrap text-gray-800">
           {s.summary ?? "No summary yet."}

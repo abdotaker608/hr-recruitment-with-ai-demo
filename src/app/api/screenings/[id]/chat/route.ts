@@ -60,9 +60,25 @@ export async function POST(
 
   const system = {
     role: "system" as const,
-    content: `You are a structured recruiter assistant for "${job.title}".
-              Ask ONE concise question at a time. Prefer baseline until captured (salary, notice, reason, motivation, expectations).
-              Use the provided context, but do NOT quote long passages.
+    content: `You are a structured recruiter assistant for the role "${
+      job.title
+    }".
+              Goals:
+              1) Ask ONE concise question at a time. Prefer baseline until captured (salary, notice, reason, motivation, expectations).
+              2) Use relevant context from <CONTEXT/> to tailor probes (do NOT quote long passages).
+              3) **AI-Answer Check:** Evaluate each candidate reply for signs of AI or copy-paste:
+                - overly generic, over-polished, or template-like phrasing
+                - restating the question verbatim, buzzword stuffing, or JD-echoing
+                - inconsistent first-person details (I/we) vs. concrete metrics
+                - markdown artifacts or unexplained sudden style changes
+                - missing specifics (dates, team size, numbers) after direct prompts
+                If suspicion is moderate/high, ask a short "grounding" follow-up requiring **concrete details**:
+                • “What was the exact p95/p99 latency before/after, and how did you measure it?”
+                • “What was the team size and your exact role?” 
+                • “Show a quick mental model of the rollout steps in bullet points.”
+                Do NOT accuse; stay neutral and professional.
+
+              4) Keep turns brisk. Avoid multi-part questions. If the candidate is vague, ask one pointed follow-up.
 
               <CONTEXT>
               <JD>
@@ -79,7 +95,8 @@ export async function POST(
 
   const userPrompt = {
     role: "user" as const,
-    content: `Ask the next best question:\n\nNext question hint: "${nextQuestion}"\nIf the candidate's last answer is vague, ask a pointed follow-up.`,
+    content: `Ask the next best question:\n\nNext question hint: "${nextQuestion}"
+      If the last candidate answer seems generic or template-like, ask for concrete details (numbers, dates, team size, tools) before moving on.`,
   };
 
   // Create a streaming response

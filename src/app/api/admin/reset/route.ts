@@ -1,26 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { client } from "@/db/client";
 import { v4 as uuid } from "uuid";
+import { JD, CV } from "@/const/mock";
 
 export const runtime = "nodejs";
-
-const JD = `
-Role: Senior Backend Engineer (with DevOps expertise)
-Responsibilities:
-- Architect backend in Node.js/TS and Go. CI/CD, Docker, K8s.
-- Scalable data (Postgres, Redis). Observability (Prom/Grafana/ELK).
-Qualifications:
-- 5+ years, distributed systems, DevOps (Terraform/Helm), mentoring.
-Nice: Kafka/RabbitMQ, security best practices.
-`;
-
-const CV = `
-Name: Sarah Ahmed
-Summary: 6 years backend. Node.js/TS. CI/CD. K8s. Scaling.
-FinTechX: 20k+/min payments; GH Actions + Helm; led 3 eng; Redis cache p95 800ms→200ms.
-ShopEase: Postgres replicas; Terraform; Prom/Grafana → MTTR -40%.
-Skills: Node.js, TS, Go(basic), Postgres, Redis, K8s, Docker, Terraform, Helm.
-`;
 
 export async function POST(req: NextRequest) {
   const token = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");

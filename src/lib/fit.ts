@@ -1,39 +1,75 @@
+// lib/fit.ts
+type SparcLike = {
+  score: number;
+  anchorSnippet?: string;
+  action?: string;
+  result?: string;
+};
+
 export async function computeWeightedFit({
   sparcItems,
   weights = { backend: 0.4, leadership: 0.3, scaling: 0.3 },
 }: {
-  sparcItems: {
-    score: number;
-    tags?: string[];
-    anchor_snippet?: string;
-    action?: string;
-    result?: string;
-  }[];
+  sparcItems: SparcLike[];
   weights?: { backend: number; leadership: number; scaling: number };
 }) {
-  // map SPARC items to themes by naive keyword tags (demo-ready)
-  const tag = (t: string) => (s: string) => new RegExp(t, "i").test(s);
-  const by = (p: (s: string) => boolean) =>
-    sparcItems
-      .filter(
-        (x) =>
-          p(x.anchor_snippet || "") || p(x.action || "") || p(x.result || "")
-      )
-      .map((x) => x.score);
-  const avg = (a: number[]) =>
-    a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0.6;
+  // 1) Normalize weights (handles 4/3/3 or any arbitrary numbers)
+  const sumW = Math.max(
+    1e-9,
+    weights.backend + weights.leadership + weights.scaling
+  );
+  const W = {
+    backend: weights.backend / sumW,
+    leadership: weights.leadership / sumW,
+    scaling: weights.scaling / sumW,
+  };
 
-  const backend = avg(by(tag("latency|cache|postgres|redis|api|throughput")));
-  const leadership = avg(by(tag("lead|mentor|drive|coordinate|ownership")));
-  const scaling = avg(
-    by(tag("scale|kubernetes|replica|autoscal|traffic|peak"))
+  // 2) Ensure scores are 0..1 (if someone passed 78 instead of 0.78)
+  const normalizeScore = (x: number) => {
+    if (x == null || Number.isNaN(x)) return 0.0;
+    if (x > 1.0) return Math.min(1.0, x / 100); // treat 0..100 as percent
+    if (x < 0.0) return 0.0;
+    return x;
+  };
+
+  // 3) Thematic grouping (very simple keyword buckets)
+  const match = (re: RegExp, s?: string) => !!(s && re.test(s));
+  const bucket = (re: RegExp) =>
+    sparcItems
+      .map((s) => ({
+        ...s,
+        _n: normalizeScore(s.score),
+        _hit: re.test(
+          [s.anchorSnippet, s.action, s.result]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase()
+        ),
+      }))
+      .filter((s) => s._hit)
+      .map((s) => s._n);
+
+  const avg = (arr: number[], fallback = 0.6) =>
+    arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : fallback;
+
+  const backendArr = bucket(
+    /latency|cache|postgres|redis|api|throughput|perf|query|index/
+  );
+  const leadershipArr = bucket(
+    /lead|mentor|ownership|coordinate|drive|guided|coached/
+  );
+  const scalingArr = bucket(
+    /scale|kubernetes|k8s|replica|autoscal|traffic|peak|hpa/
   );
 
-  const score =
-    (backend * weights.backend +
-      leadership * weights.leadership +
-      scaling * weights.scaling) *
-    100;
+  const backend = avg(backendArr);
+  const leadership = avg(leadershipArr);
+  const scaling = avg(scalingArr);
 
-  return Math.round(score);
+  // 4) Weighted score (0..1), then to 0..100 and clamp
+  const score01 =
+    backend * W.backend + leadership * W.leadership + scaling * W.scaling;
+
+  const score100 = Math.round(Math.min(100, Math.max(0, score01 * 100)));
+  return score100;
 }
